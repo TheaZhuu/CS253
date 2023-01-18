@@ -1,0 +1,31 @@
+101 cd ~info
+102 pwd
+103 cd ~cs253/bin 
+104 pwd 
+105 cd
+201 cat ~info/printers
+202 cat ~cs253/pub/hamlet.txt
+203 more ~cs253/pub/hamlet.txt
+204 tail ~cs253/pub/hamlet.txt
+301 cd
+302 cp ~cs253/pub/dwarfs ~
+303 mv dwarfs seven
+304 mkdir Zulu
+305 mv seven Zulu
+306 ls -l Zulu/seven
+307 rm -r Zulu
+401 cp ~cs253/pub/dwarfs ~
+402 wc dwarfs
+403 emacs dwarfs
+404 diff ~cs253/pub/dwarfs dwarfs
+405 grep u dwarfs
+501 date > now
+502 cat ~cs253/pub/dwarfs >> now
+503 grep xy ~cs253/pub/common-words.txt | sort
+601 cd ~cs253/pub
+602 ls .*
+603 cp ??????????? ~
+701 cp dwarfs ~
+702 cd
+703 chmod ug=rw dwarfs
+704 ls -l dwarfs
