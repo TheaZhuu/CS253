@@ -1,0 +1,21 @@
+    exp1: delete[] not called
+
+    exp2: array out of range and delete [] not called 
+
+    exp3: it didn't initialize x, at line 6 should initizlize x = 0
+    
+    exp4: it didn't initialize y, at line 11 should initizlize y = 0
+
+    exp5: array out of range 
+    
+    exp6: the pointer pointing to memory location that has been deleted, the pointer doesn't exist anymore.
+
+    exp7: allocate many moemory, using delete []p to free all of them
+    
+    exp8: using delete []p instead of dispose(p)
+    
+    exp9: moving the pointer to the third position, so using the dispose() to delete memory, it lost the memory 0, 1, 2
+    
+    exp10: unsigned integer cannot represent the nagative number
+
+
