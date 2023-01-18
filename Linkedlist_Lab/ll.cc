@@ -1,0 +1,59 @@
+#include "ll.h"
+#include <cstdlib>
+#include <bits/stdc++.h>
+#include<iostream>
+
+using namespace std;
+LinkedList::Link::Link(unsigned uiData, Link *pNext){
+    m_uiData = uiData;
+    m_pNext = pNext;
+}
+
+LinkedList::LinkedList() {
+    m_pHead = nullptr;			// This linked list is empty.
+}
+
+bool LinkedList::insert(unsigned uiData) {
+    Link* new_link = new Link(uiData,this-> m_pHead);			// Get a new node.
+ 
+    //new_link->Link(uiData,this-> m_pHead); // Fill it with data.
+    this->m_pHead = new_link;			// Put it at the head.
+
+    return true;				// Indicate success.
+}
+
+bool LinkedList::remove(unsigned *pData) {
+    if (! m_pHead)				// Empty list?
+	return false;				// Indicate failure.
+
+    Link *temp = this->m_pHead;			// Point to the first node.
+   this-> m_pHead =this-> m_pHead->m_pNext;	// Remove the first node.
+    *pData = temp->m_uiData;			// Obtain first node’s data.
+    delete temp;      // free old pData
+
+    return true;				// Indicate success.
+}
+
+//This function prints contents of linked list
+void LinkedList::print(){
+  LinkedList::Link *temp = m_pHead;
+  while(temp != nullptr){
+    //one space between
+    cout<< temp->m_uiData <<' ';
+    temp = temp->m_pNext;
+  }
+  cout << '\n';
+
+}
+
+std::ostream & operator << (std::ostream & out, const LinkedList & list){
+  LinkedList::Link *temp =list.m_pHead;
+
+  while(temp != nullptr){
+    //one space between
+    out<< temp->m_uiData <<' ';
+    temp = temp->m_pNext;
+  }
+  out << '\n';
+  return out;
+}
