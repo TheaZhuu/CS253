@@ -1,0 +1,163 @@
+# This is a Makefile.  Its purpose is to create the program “small”.
+#
+# The rules, below, indicate what depends on what, and how to build
+# things when they get out-of-date.  It is VERY important to know that
+# what looks like eight leading spaces is really a leading tab
+# character.  Leading spaces won’t work--it MUST be a tab character.
+#
+# For the following questions, do the command if there is one,
+# and then answer the question.  If you need another line for you
+# answer, continue it on the next line, indented.
+#
+# As an example, I’ve already answered (1), which has nothing to do
+# with anything else in this lab.
+#
+# Question 1 is worth 0.09 points; questions 2–14 are worth 0.07
+# points each.
+#
+#  1) Command:  date +%A
+#     Question: Describe the output of that command.
+#     Answer:   It’s today’s day of the week.
+#
+#  2) Command:  make
+#     Question: Describe what happens.  Don’t just write the commands;
+#     		describe what each command does.
+#     Answer:  output: g++  -c main.cc
+#                      g++  -c foo.cc
+#              	       g++  main.o foo.o -o small
+# 	Based on my standing the first two lines is that -c means that compile or assemble the source files. the
+#	source files is made by replacing .c with .o.  then small depends on main.o and foo.o. when we are runing the the
+#	linking process of main.o and foo.o, then it will creat small.
+
+#
+#  3) Command:  ./small
+#     Question: What is the output?  Reproduce the output exactly.
+#     Answer:   output:  Hi from main at main.cc:15
+#			 Hi from foo at foo.cc:14
+#     the first line of output excuted from main.cc which is cout << "Hi from " << __func__ << " at " __FILE__ ":" << __LINE__ << '\n';
+#     the second line of output excuted from foo.cc which is cout << "Hi from " << __func__ << " at " __FILE__ ":" << __LINE__ << '\n';
+
+
+#
+#  4) Command:  make
+#     Question: Why did nothing much happen?
+#     Answer:   output: 'small' is up to date.
+#               reason: make is determine the programs need to be compiled or recompiled.
+#			In this situation, we didn't change any code from main.cc and foo.cc.
+#			Therefore, there is nothing much happen.
+
+#
+#  5) Command:  rm small; make
+#     Question: What got remade, and why?
+#     Answer:   output: g++  main.o foo.o -o small
+# 		reason: we remove the file of small, then we did make. I typed command of 'ls'. it shows that the small is remade.
+#			since small is depending on the main.o and foo.o, when we type make. it will remake the small.
+
+#
+#  6) Command:  rm foo.o; make
+#     Question: What got remade, and why?
+#     Answer:  output: g++  -c foo.cc
+#		       g++  main.o foo.o -o small
+#	       reason: since the small is depending on the main.o and foo.o, when remove the foo.o, the command make will remake foo.o and then remake small.
+#
+#  7) Command:  make clean
+#     Question: What did that do?
+#     Answer:   output: rm -f small *.o
+#		reason: since small is depening on the main.o and foo,o, when command make clean, it will remove the file of small and all .o files 
+
+#
+#  8) Command:  make
+#     Question: What got remade, and why?
+#     Answer:   ouput: g++  -c main.cc
+#		       g++  -c foo.cc
+#		       g++  main.o foo.o -o small
+#		reason: since from the previous step, we remove the file of small and all .o files.
+#			when we command make, it will remake the main.o and foo.o then to remake small.
+
+
+#
+#  9) Question: Why does main.o depend on foo.h?
+#		I know that it’s because the Makefile says so.
+#		Why was that dependency put into the Makefile?
+#     Answer:   From the graph shows that the arrows represent dependencies.
+#		Based on graph, we can know the small by linking together main.o and foo.o.
+#		however, the main.o by linking main.cc and foo.h.
+#
+# 10) Command:  Create a new function bar() in bar.cc & bar.h,
+# 		similar to foo.cc.  Change main.cc to call the new
+# 		bar() function, make sure to #include the proper .h
+# 		files everywhere, and type “make”.  Don’t alter Makefile.
+#     Question: Why did it fail?
+#     Answer:   output: g++  -c main.cc
+#			g++  main.o foo.o -o small
+#			main.o: In function `main':
+#			main.cc:(.text+0x48): undefined reference to `bar()'
+#			collect2: error: ld returned 1 exit status
+#			make: *** [Makefile:98: small] Error 1
+#		reason: since the command make link main.o and foo.o and the foo.o depends on the foo.h.
+#			therefore, when we replace the foo.h to bar.h,it will fail.
+ 
+#
+# 11) Command:  Fix the Makefile; verify with “make” until it compiles.
+#     Question: Describe your changes.  Don’t just show the changed
+#     		lines--describe the purpose of each change.
+#     Answer:   I changed the code to small: 	main.o bar.o
+#						$(CXX) $(CXXFLAGS) main.o bar.o -o small
+
+#						main.o: main.cc bar.h
+#						$(CXX) $(CXXFLAGS) -c main.cc
+
+#						bar.o: bar.cc bar.h
+#						$(CXX) $(CXXFLAGS) -c bar.cc
+#		so, I typed command make, it shows that g++  -c main.cc
+#						       g++  main.o bar.o -o small
+#		as a result, it will be run instead of foo.cc
+
+#
+# 12) Command:  Uncomment the CXXFLAGS= line, and type “make”.
+#     Question: Why didn't anything happen?
+#     Answer:   output: make: 'small' is up to date.
+#		reason: since the small is made already. we didn't change any code from main.cc and bar.cc.
+#			Therefore, there is nothing much happen.
+
+#
+# 13) Command:  Force a rebuild with: make clean; make
+#     Question: What’s new about the commands executed?
+#     Answer:   ouput: the first command of ouput is rm -f small *.o.
+#		       the second command of ouput is g++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Winit-self -Wshadow -Wlogical-op -Wcomment -Wctor-dtor-privacy -Wold-style-cast -D_GLIBCXX_DEBUG -fno-diagnostics-show-option -c main.cc
+#						      g++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Winit-self -Wshadow -Wlogical-op -Wcomment -Wctor-dtor-privacy -Wold-style-cast -D_GLIBCXX_DEBUG -fno-diagnostics-show-option -c bar.cc
+#						      g++ -std=c++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Winit-self -Wshadow -Wlogical-op -Wcomment -Wctor-dtor-privacy -Wold-style-cast -D_GLIBCXX_DEBUG -fno-diagnostics-show-option main.o bar.o -o small
+#		reason: it shows that the ouput from command CXXFLAGS=-std=c++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Winit-self -Wshadow -Wlogical-op -Wcomment -Wctor-dtor-privacy -Wold-style-cast -D_GLIBCXX_DEBUG -fno-diagnostics-show-option
+
+
+#
+# 14) Command: 	make clean; ls -l clean
+#     Question: The target is “clean”, but no file “clean” got created.
+#     		Why not?
+#     Answer:   since the command make clean to remove file small and all .o files. and the command ls -l clean shows that" ls: cannot access 'clean': No such file or directory", the command of each didn't create clean file.
+
+#
+# For extra fame & glory (but no extra points):
+#
+# 15) Command:  Consult the make manual at
+# 		https://www.gnu.org/software/make/manual/make.html
+#		and improve this Makefile by using $@ in the rule
+#		that creates “small” itself.
+
+# The CXX variable contains the name of the C++ compiler.  You can’t
+# have plus signs in a Make variable, so X is a rotated plus sign.
+CXX=g++
+
+CXXFLAGS=-std=c++17 -Wall -Wextra -Wpedantic -Werror -Wfatal-errors -Winit-self -Wshadow -Wlogical-op -Wcomment -Wctor-dtor-privacy -Wold-style-cast -D_GLIBCXX_DEBUG -fno-diagnostics-show-option
+
+small: main.o bar.o
+	$(CXX) $(CXXFLAGS) main.o bar.o -o small
+
+main.o: main.cc bar.h
+	$(CXX) $(CXXFLAGS) -c main.cc
+
+bar.o: bar.cc bar.h
+	$(CXX) $(CXXFLAGS) -c bar.cc
+
+clean:
+	-rm -f small *.o
