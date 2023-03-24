@@ -1,0 +1,61 @@
+Q1:
+Why does new return void *, as opposed to int *, or double *, or whatever type we’re allocating?  
+ans: at this level, operator new has no idea what type they should be allocated.        
+
+Q2:
+Run the code, consider the output. Now explain briefly, for each line of main(), which function is called and why?
+
+    double *p = new double; //calling the global new operator from c++
+    Foo *q = new Foo; //operator new defined and allocating it to the Foo
+    Foo *r = new Foo;//operator new defined and allocating it to the Foo
+    delete p; //calling the global delete operator from c++
+    delete q;//operator delete with overloading operator
+    delete r;//operator delete with overloading operator
+
+Why are operator new and operator delete declared static?
+ans: when they declar static, we can call those two functions without having object.
+
+Q3Does it compile? Why not? 
+ans: it doesn't compile because two functions are private funtctions.
+      
+Q4:
+Does it compile? Why not?  
+ans: it doesn't compile becasue opertor new and operator delete are deleted already.
+
+Q5:
+Why does the mixin class declare its ctor & dtor protected?      
+ans: it is protected,so we can not create object of type no new delete.
+
+Q6:
+Observe the error message, and decide what caused it. How would you improve it to detect multiple deletions of the same memory?
+ans: it use reinterpret_cast to get r. as the result of r's class, the address from min_addr to max_addr is taken by q. r is no more space. we can keep tracking what we detele, and it there is same thing deleted. we can throw the error.
+
+Q7:
+What is the best byte value to use for writing to memory?
+ans: the best byte value to use for writing to memory is "char" because if we don't put type of char, it will return 0000..., we don't know which line it is return.the best way is put type of char to make us to know which line is. 
+
+Q8:
+What is the size of class Foo? What is the difference between the values of p and q? Why?
+ans : size of foo is 8. p=0xdb32c0, q=0xdb32e0. the difference between the values of p and q is 32. the compiler allocate memory address will not put it togther.
+Between those two variables will have some address. this is the reason of why the differenceis 32.
+
+What is the size of class Bar? What is the difference between the values of r and s? Why?
+ans: size of Bar is 8. r=0xe6a2c0,s=0xe6a2c8. the difference between the values of r and s is 8. since pool.cc have operator new and delete, the size of first variable is 8. 
+when put the second variable, the differece between the value of r and s is 8.
+
+Q9: 
+Will Bar inherit the redefined new and delete?
+Bar will inherit the redefined new and delete.
+
+Will that work, if sizeof(Bar) > sizeof(Foo)?How would you fix that?
+it will be work if we fix on both operator new for foo and bar having same size of allocating address.
+
+
+Q10:
+What is the ratio of time used between the two? Why?
+normal.cc= 0.22, pool.cc = 0.06. From the normal.cc, we allocate the momory more than pool.cc. As the result, the normal.cc takes more time than bar.
+
+Q11:
+What is the ratio of memory used between the two? Why?
+foo = 2196, bar = 2000.From the normal.cc, we allocate the momory more than pool.cc. 
+
